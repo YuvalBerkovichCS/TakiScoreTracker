@@ -1,6 +1,8 @@
 import React from "react";
 import DialogTitle from "@mui/material/DialogTitle";
 import Dialog from "@mui/material/Dialog";
+import TextField from "@mui/material/TextField";
+
 import styled from "styled-components";
 
 export const BaseDialog = styled(Dialog)`
@@ -25,4 +27,20 @@ export const Title = styled(DialogTitle)`
   justify-content: flex-start;
   width: 100%;
   padding: 0 !important;
+`;
+
+export const Form = styled.form``;
+
+export const Field = styled(TextField)``;
+
+export const CancelButton = styled.button`
+  position: absolute;
+  bottom: 10px;
+  right: 60px;
+`;
+
+export const SaveButton = styled.button`
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
 `;

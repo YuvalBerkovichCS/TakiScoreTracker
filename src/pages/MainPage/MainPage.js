@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import * as S from "./style";
+import LogoImg from "../../assets/Images/TAKI_logo.png";
 import { v4 as uuidv4 } from "uuid";
 import PlayerDialog from "./PlayerDialog";
 
@@ -43,15 +44,21 @@ const MainPage = () => {
     setPlayersList(playersList);
   };
 
-  function increasePlayerCounter(playerId, amount) {
+  const displayWinner = (id) => {
+    console.log({ winner: id });
+  };
+
+  const increasePlayerCounter = useCallback((playerId, amount) => {
     setPlayersList((prev) => {
       const playerIndex = prev.findIndex((player) => player.id === playerId);
+
       const newPlayersList = [...prev];
-      newPlayersList[playerIndex].gameCounter += amount;
+      newPlayersList[playerIndex].gameCounter =
+        prev[playerIndex].gameCounter - 1;
 
       return newPlayersList;
     });
-  }
+  }, []);
 
   function createPlayersArray(playerAmount, margin) {
     const players = [];
@@ -69,15 +76,26 @@ const MainPage = () => {
     <S.Container>
       {playersList.length > 0 && (
         <S.TableCircle>
-          {playersList.map(({ name, top, left, id }, index) => (
+          <S.LogoImg src={LogoImg} />
+          {playersList.map(({ name, gameCounter, top, left, id }, index) => (
             <S.Player
-              playerWidth={PLAYER_WIDTH}
+              playerwidth={PLAYER_WIDTH}
               style={{ marginTop: top, marginLeft: left }}
               key={index}
               onClick={() => setSelectedPlayerId(id)}
               // onClick={() => increasePlayerCounter(id, 1)}
             >
-              {name}
+              <span>{name}</span>
+              <span>{gameCounter}</span>
+              <S.ReduceButton
+                onClick={(e) => {
+                  e.stopPropagation();
+                  increasePlayerCounter(id, -1);
+                  if (gameCounter === 0) displayWinner(id);
+                }}
+              >
+                -
+              </S.ReduceButton>
             </S.Player>
           ))}
           {/* Dialog */}
@@ -93,6 +111,6 @@ const MainPage = () => {
   );
 };
 
-const PLAYER_WIDTH = 50;
+const PLAYER_WIDTH = 75;
 
 export default MainPage;
