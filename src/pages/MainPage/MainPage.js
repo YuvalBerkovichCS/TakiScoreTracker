@@ -16,6 +16,9 @@ const MainPage = () => {
   const tableRadius = 125;
   const margin = tableRadius + PLAYER_WIDTH / 2 + 10;
   const players = createPlayersArray(playersAmount, margin);
+  // const winnerPlayerId = playersList.find(
+  //   (player) => player.gameCounter === 0
+  // )?.id;
 
   const handlePlayerChange = (playerId, data) => {
     setPlayersList((prev) => {
@@ -44,9 +47,7 @@ const MainPage = () => {
     setPlayersList(playersList);
   };
 
-  const displayWinner = (id) => {
-    console.log({ winner: id });
-  };
+  const checkWinner = (id) => {};
 
   const increasePlayerCounter = useCallback((playerId, amount) => {
     setPlayersList((prev) => {
@@ -76,35 +77,43 @@ const MainPage = () => {
     <S.Container>
       {playersList.length > 0 && (
         <S.TableCircle>
+          {/* {winnerPlayerId} */}
           <S.LogoImg src={LogoImg} />
-          {playersList.map(({ name, gameCounter, top, left, id }, index) => (
-            <S.Player
-              playerwidth={PLAYER_WIDTH}
-              style={{ marginTop: top, marginLeft: left }}
-              key={index}
-              onClick={() => setSelectedPlayerId(id)}
-              // onClick={() => increasePlayerCounter(id, 1)}
-            >
-              <span>{name}</span>
-              <span>{gameCounter}</span>
-              <S.ReduceButton
-                onClick={(e) => {
-                  e.stopPropagation();
-                  increasePlayerCounter(id, -1);
-                  if (gameCounter === 0) displayWinner(id);
-                }}
+          {playersList.map(({ name, gameCounter, top, left, id }, index) => {
+            const isPlayerFinished = gameCounter === 0;
+
+            return (
+              <S.Player
+                playerwidth={PLAYER_WIDTH}
+                style={{ marginTop: top, marginLeft: left }}
+                key={index}
+                onClick={() => setSelectedPlayerId(id)}
+                // onClick={() => increasePlayerCounter(id, 1)}
               >
-                -
-              </S.ReduceButton>
-            </S.Player>
-          ))}
+                <span>{name}</span>
+                <span>{gameCounter}</span>
+                {!isPlayerFinished && (
+                  <S.ReduceButton
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      increasePlayerCounter(id, -1);
+                    }}
+                  >
+                    -
+                  </S.ReduceButton>
+                )}
+              </S.Player>
+            );
+          })}
           {/* Dialog */}
-          <PlayerDialog
-            isOpen={isPlayerDialogOpen}
-            player={selectedPlayer}
-            onChange={handlePlayerChange}
-            onClose={() => setSelectedPlayerId()}
-          />
+          {isPlayerDialogOpen && (
+            <PlayerDialog
+              isOpen={isPlayerDialogOpen}
+              player={selectedPlayer}
+              onChange={handlePlayerChange}
+              onClose={() => setSelectedPlayerId()}
+            />
+          )}
         </S.TableCircle>
       )}
     </S.Container>
