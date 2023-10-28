@@ -7,6 +7,7 @@ import PlayerDialog from "./PlayerDialog";
 const MainPage = () => {
   // Define the number of players
   const [playersList, setPlayersList] = useState([]); // [ { name: 'player 1', top: 0, left: 0 }, ...
+  const [finishedPlayersIds, setFinishedPlayersIds] = useState([]);
   const [selectedPlayerId, setSelectedPlayerId] = useState(null);
   const isPlayerDialogOpen = !!selectedPlayerId;
   const selectedPlayer = playersList.find(
@@ -20,46 +21,74 @@ const MainPage = () => {
   //   (player) => player.gameCounter === 0
   // )?.id;
 
+  useEffect(() => {
+    handleStartGame(playersAmount);
+  }, []);
+
   const handlePlayerChange = (playerId, data) => {
     setPlayersList((prev) => {
       const playerIndex = prev.findIndex((player) => player.id === playerId);
       const newPlayersList = [...prev];
+      if (data.hasOwnProperty("gameCounter")) {
+        data.gameCounter = +data.gameCounter;
+      }
       newPlayersList[playerIndex] = { ...newPlayersList[playerIndex], ...data };
 
       return newPlayersList;
     });
+    console.log({ data });
+    if (data.gameCounter === 0) {
+      handlePlayerFinished(playerId);
+    }
   };
 
-  useEffect(() => {
-    handleStartGame(playersAmount);
-  }, []);
+  const handlePlayerFinished = (playerId) => {
+    setFinishedPlayersIds((prev) => {
+      const newFinishedPlayersIds = [...prev];
+      newFinishedPlayersIds.push(playerId);
+      return newFinishedPlayersIds;
+    });
+  };
 
   const handleStartGame = (players) => {
     const playersList = createPlayersArray(players, margin).map(
       (player, index) => ({
         ...player,
         id: uuidv4(),
-        name: `player ${index + 1}`,
+        name: PLAYERS_NAMES[index],
         gameCounter: 8,
       })
     );
 
     setPlayersList(playersList);
   };
+  console.log({ playersList: playersList });
+  console.log({ finsihedPlayersId: finishedPlayersIds });
 
-  const checkWinner = (id) => {};
+  const checkWinner = (playerId) => {
+    console.log(playersList.find((player) => player.id === playerId));
+    return (
+      playersList.find((player) => player.id === playerId)?.gameCounter === 0
+    );
+  };
 
-  const increasePlayerCounter = useCallback((playerId, amount) => {
-    setPlayersList((prev) => {
-      const playerIndex = prev.findIndex((player) => player.id === playerId);
+  const getPlayerNameById = (playerId) => {
+    const currentPlayerName = playersList.find(
+      ({ id }) => id === playerId
+    )?.name;
+    return currentPlayerName;
+  };
 
-      const newPlayersList = [...prev];
-      newPlayersList[playerIndex].gameCounter =
-        prev[playerIndex].gameCounter - 1;
+  const increasePlayerCounter = (playerId, amount) => {
+    const currentPlayerGameCounter = playersList.find(
+      ({ id }) => id === playerId
+    )?.gameCounter;
 
-      return newPlayersList;
-    });
-  }, []);
+    const newData = {
+      gameCounter: currentPlayerGameCounter + amount,
+    };
+    return handlePlayerChange(playerId, newData);
+  };
 
   function createPlayersArray(playerAmount, margin) {
     const players = [];
@@ -114,6 +143,15 @@ const MainPage = () => {
               onClose={() => setSelectedPlayerId()}
             />
           )}
+          <S.WinnersList>
+            {finishedPlayersIds.map((playerId) => {
+              return (
+                <S.WinnersListItem>
+                  {getPlayerNameById(playerId)}
+                </S.WinnersListItem>
+              );
+            })}
+          </S.WinnersList>
         </S.TableCircle>
       )}
     </S.Container>
@@ -121,5 +159,15 @@ const MainPage = () => {
 };
 
 const PLAYER_WIDTH = 75;
+const PLAYERS_NAMES = [
+  "Yuval",
+  "Yanko",
+  "Pulik",
+  "Alon",
+  "Kobi",
+  "Pekker",
+  "Chen",
+  "Daniel",
+];
 
 export default MainPage;

@@ -18,6 +18,7 @@ export const TableCircle = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-direction: column;
   position: relative;
 `;
 
@@ -43,5 +44,12 @@ export const ReduceButton = styled.button`
 `;
 
 export const LogoImg = styled.img`
-  width: 80%;
+  width: 60%;
 `;
+
+export const WinnersList = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+export const WinnersListItem = styled.div``;

@@ -1,5 +1,4 @@
 import React from "react";
-import Button from "@mui/material/Button";
 
 import * as S from "./style";
 
@@ -36,6 +35,7 @@ const PlayerDialog = ({ isOpen, player, onClose, onChange }) => {
         <S.Field
           name="gameCounter"
           label="Counter"
+          type="number"
           variant="outlined"
           margin="normal"
           defaultValue={player?.gameCounter}
