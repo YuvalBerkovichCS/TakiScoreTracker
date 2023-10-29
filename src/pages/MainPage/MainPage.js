@@ -3,17 +3,19 @@ import * as S from "./style";
 import LogoImg from "../../assets/Images/TAKI_logo.png";
 import { v4 as uuidv4 } from "uuid";
 import PlayerDialog from "./PlayerDialog";
+import EndGameDialog from "./EndGameDialog";
+import WinnersList from "./WinnersList";
 
 const MainPage = () => {
   // Define the number of players
   const [playersList, setPlayersList] = useState([]); // [ { name: 'player 1', top: 0, left: 0 }, ...
-  const [finishedPlayersIds, setFinishedPlayersIds] = useState([]);
+  const [winnersIds, setWinnersIds] = useState([]);
   const [selectedPlayerId, setSelectedPlayerId] = useState(null);
   const isPlayerDialogOpen = !!selectedPlayerId;
   const selectedPlayer = playersList.find(
     (player) => player.id === selectedPlayerId
   );
-  const playersAmount = 8;
+  const playersAmount = 3;
   const tableRadius = 125;
   const margin = tableRadius + PLAYER_WIDTH / 2 + 10;
   const players = createPlayersArray(playersAmount, margin);
@@ -27,10 +29,18 @@ const MainPage = () => {
 
   const handlePlayerChange = (playerId, data) => {
     setPlayersList((prev) => {
+      console.log({ previousArray: prev });
       const playerIndex = prev.findIndex((player) => player.id === playerId);
       const newPlayersList = [...prev];
       if (data.hasOwnProperty("gameCounter")) {
         data.gameCounter = +data.gameCounter;
+
+        if (prev.find((player) => player.id === playerId)?.gameCounter === 0) {
+          setWinnersIds((prev) => {
+            const newWinnersIds = prev.filter((id) => id !== playerId);
+            return newWinnersIds;
+          });
+        }
       }
       newPlayersList[playerIndex] = { ...newPlayersList[playerIndex], ...data };
 
@@ -40,14 +50,6 @@ const MainPage = () => {
     if (data.gameCounter === 0) {
       handlePlayerFinished(playerId);
     }
-  };
-
-  const handlePlayerFinished = (playerId) => {
-    setFinishedPlayersIds((prev) => {
-      const newFinishedPlayersIds = [...prev];
-      newFinishedPlayersIds.push(playerId);
-      return newFinishedPlayersIds;
-    });
   };
 
   const handleStartGame = (players) => {
@@ -62,22 +64,19 @@ const MainPage = () => {
 
     setPlayersList(playersList);
   };
+
+  const handlePlayerFinished = (playerId) => {
+    setWinnersIds((prev) => {
+      const newWinnersIds = [...prev];
+      newWinnersIds.push(playerId);
+      return newWinnersIds;
+    });
+  };
+
+  const handleEndGame = () => {};
+
   console.log({ playersList: playersList });
-  console.log({ finsihedPlayersId: finishedPlayersIds });
-
-  const checkWinner = (playerId) => {
-    console.log(playersList.find((player) => player.id === playerId));
-    return (
-      playersList.find((player) => player.id === playerId)?.gameCounter === 0
-    );
-  };
-
-  const getPlayerNameById = (playerId) => {
-    const currentPlayerName = playersList.find(
-      ({ id }) => id === playerId
-    )?.name;
-    return currentPlayerName;
-  };
+  console.log({ finsihedPlayersId: winnersIds });
 
   const increasePlayerCounter = (playerId, amount) => {
     const currentPlayerGameCounter = playersList.find(
@@ -107,7 +106,7 @@ const MainPage = () => {
       {playersList.length > 0 && (
         <S.TableCircle>
           {/* {winnerPlayerId} */}
-          <S.LogoImg src={LogoImg} />
+          <S.LogoImg src={LogoImg} issmalllogo={!!winnersIds?.length} />
           {playersList.map(({ name, gameCounter, top, left, id }, index) => {
             const isPlayerFinished = gameCounter === 0;
 
@@ -143,15 +142,13 @@ const MainPage = () => {
               onClose={() => setSelectedPlayerId()}
             />
           )}
-          <S.WinnersList>
-            {finishedPlayersIds.map((playerId) => {
-              return (
-                <S.WinnersListItem>
-                  {getPlayerNameById(playerId)}
-                </S.WinnersListItem>
-              );
-            })}
-          </S.WinnersList>
+          <WinnersList winnersIds={winnersIds} playersList={playersList} />
+          <EndGameDialog
+            isOpen={winnersIds.length === playersAmount - 1}
+            onClose={() => setWinnersIds([])}
+            winnersIds={winnersIds}
+            playersList={playersList}
+          />
         </S.TableCircle>
       )}
     </S.Container>

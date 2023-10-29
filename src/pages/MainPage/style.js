@@ -44,12 +44,5 @@ export const ReduceButton = styled.button`
 `;
 
 export const LogoImg = styled.img`
-  width: 60%;
+  width: ${({ issmalllogo }) => (issmalllogo ? 60 : 80)}%;
 `;
-
-export const WinnersList = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
-
-export const WinnersListItem = styled.div``;

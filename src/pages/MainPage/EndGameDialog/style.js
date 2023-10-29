@@ -15,31 +15,25 @@ export const BaseDialog = styled(Dialog)`
   }
 `;
 
-export const CloseButton = styled.button`
-  position: absolute;
-  top: 10px;
-  right: 10px;
+export const Content = styled.div`
+  display: flex;
+  justify-content: center;
 `;
 
 export const Title = styled(DialogTitle)`
   display: flex;
-  justify-content: flex-start;
-  width: 100%;
-  padding: 0 !important;
+  justify-content: center;
 `;
 
 export const Form = styled.form``;
 
 export const Field = styled(TextField)``;
 
-export const CancelButton = styled.button`
-  position: absolute;
-  bottom: 10px;
-  right: 60px;
+export const Footer = styled.div`
+  display: flex;
+  justify-content: space-between;
 `;
 
-export const SaveButton = styled.button`
-  position: absolute;
-  bottom: 10px;
-  right: 10px;
-`;
+export const RestartGameButton = styled.button``;
+
+export const EndGameButton = styled.button``;
