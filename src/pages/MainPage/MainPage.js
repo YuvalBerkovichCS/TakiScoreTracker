@@ -2,12 +2,14 @@ import React, { useCallback, useEffect, useState } from "react";
 import * as S from "./style";
 import LogoImg from "../../assets/Images/TAKI_logo.png";
 import { v4 as uuidv4 } from "uuid";
+import StartGameDialog from "./StartGameDialog";
 import PlayerDialog from "./PlayerDialog";
 import EndGameDialog from "./EndGameDialog";
 import WinnersList from "./WinnersList";
 
 const MainPage = () => {
   // Define the number of players
+  const [isGameStarted, setIsGameStarted] = useState(false);
   const [playersList, setPlayersList] = useState([]); // [ { name: 'player 1', top: 0, left: 0 }, ...
   const [winnersIds, setWinnersIds] = useState([]);
   const [selectedPlayerId, setSelectedPlayerId] = useState(null);
@@ -15,7 +17,7 @@ const MainPage = () => {
   const selectedPlayer = playersList.find(
     (player) => player.id === selectedPlayerId
   );
-  const playersAmount = 3;
+  const playersAmount = 8;
   const tableRadius = 125;
   const margin = tableRadius + PLAYER_WIDTH / 2 + 10;
   const players = createPlayersArray(playersAmount, margin);
@@ -23,9 +25,13 @@ const MainPage = () => {
   //   (player) => player.gameCounter === 0
   // )?.id;
 
-  useEffect(() => {
-    handleStartGame(playersAmount);
-  }, []);
+  // useEffect(() => {
+  //   handleStartGame(playersAmount);
+  // }, []);
+
+  const startGame = () => {
+    setIsGameStarted(true);
+  };
 
   const handlePlayerChange = (playerId, data) => {
     setPlayersList((prev) => {
@@ -71,12 +77,33 @@ const MainPage = () => {
       newWinnersIds.push(playerId);
       return newWinnersIds;
     });
+    console.log({ test: displayWinnersNames() });
+  };
+  // ['id','id2']
+  // [{name:'name',id:'id'}]
+
+  const handleRestartGame = () => {
+    setPlayersList((prev) => {
+      const newPlayersList = prev.map((player) => {
+        return { ...player, gameCounter: 8 };
+      });
+      console.log({ newPlayersList: newPlayersList });
+      return newPlayersList;
+    });
+
+    setWinnersIds([]);
+  };
+
+  const displayWinnersNames = () => {
+    return winnersIds.map((winnerId) => {
+      const playerName = playersList.find(({ id }) => id === winnerId)?.name;
+      console.log(playerName);
+      const WinnersNames = { id: winnerId, name: playerName };
+      return WinnersNames;
+    });
   };
 
   const handleEndGame = () => {};
-
-  console.log({ playersList: playersList });
-  console.log({ finsihedPlayersId: winnersIds });
 
   const increasePlayerCounter = (playerId, amount) => {
     const currentPlayerGameCounter = playersList.find(
@@ -103,54 +130,61 @@ const MainPage = () => {
 
   return (
     <S.Container>
-      {playersList.length > 0 && (
-        <S.TableCircle>
-          {/* {winnerPlayerId} */}
-          <S.LogoImg src={LogoImg} issmalllogo={!!winnersIds?.length} />
-          {playersList.map(({ name, gameCounter, top, left, id }, index) => {
-            const isPlayerFinished = gameCounter === 0;
+      <S.TableCircle>
+        <S.LogoImg src={LogoImg} issmalllogo={!!winnersIds?.length} />
+        {playersList.length === 0 && (
+          <S.StartGameButton onClick={() => startGame()}>
+            Start Game
+          </S.StartGameButton>
+        )}
+        {playersList.map(({ name, gameCounter, top, left, id }, index) => {
+          const isPlayerFinished = gameCounter === 0;
 
-            return (
-              <S.Player
-                playerwidth={PLAYER_WIDTH}
-                style={{ marginTop: top, marginLeft: left }}
-                key={index}
-                onClick={() => setSelectedPlayerId(id)}
-                // onClick={() => increasePlayerCounter(id, 1)}
-              >
-                <span>{name}</span>
-                <span>{gameCounter}</span>
-                {!isPlayerFinished && (
-                  <S.ReduceButton
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      increasePlayerCounter(id, -1);
-                    }}
-                  >
-                    -
-                  </S.ReduceButton>
-                )}
-              </S.Player>
-            );
-          })}
-          {/* Dialog */}
-          {isPlayerDialogOpen && (
-            <PlayerDialog
-              isOpen={isPlayerDialogOpen}
-              player={selectedPlayer}
-              onChange={handlePlayerChange}
-              onClose={() => setSelectedPlayerId()}
-            />
-          )}
-          <WinnersList winnersIds={winnersIds} playersList={playersList} />
-          <EndGameDialog
-            isOpen={winnersIds.length === playersAmount - 1}
-            onClose={() => setWinnersIds([])}
-            winnersIds={winnersIds}
-            playersList={playersList}
+          return (
+            <S.Player
+              playerwidth={PLAYER_WIDTH}
+              style={{ marginTop: top, marginLeft: left }}
+              key={index}
+              onClick={() => setSelectedPlayerId(id)}
+            >
+              <span>{name}</span>
+              <span>{gameCounter}</span>
+              {!isPlayerFinished && (
+                <S.ReduceButton
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    increasePlayerCounter(id, -1);
+                  }}
+                >
+                  -
+                </S.ReduceButton>
+              )}
+            </S.Player>
+          );
+        })}
+        {/* Dialog */}
+        {isPlayerDialogOpen && (
+          <PlayerDialog
+            isOpen={isPlayerDialogOpen}
+            player={selectedPlayer}
+            onChange={handlePlayerChange}
+            onClose={() => setSelectedPlayerId()}
           />
-        </S.TableCircle>
-      )}
+        )}
+        <WinnersList winnersIds={winnersIds} playersList={playersList} />
+        <EndGameDialog
+          isOpen={winnersIds.length === playersAmount - 1}
+          onRestartGame={() => handleRestartGame()}
+          onEndGame={() => handleEndGame()}
+          winnersIds={winnersIds}
+          playersList={playersList}
+        />
+        <StartGameDialog
+          isOpen={isGameStarted}
+          onStartGame={() => handleStartGame()}
+          onEndGame={() => handleEndGame()}
+        />
+      </S.TableCircle>
     </S.Container>
   );
 };

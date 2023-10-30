@@ -46,3 +46,5 @@ export const ReduceButton = styled.button`
 export const LogoImg = styled.img`
   width: ${({ issmalllogo }) => (issmalllogo ? 60 : 80)}%;
 `;
+
+export const StartGameButton = styled.button``;
