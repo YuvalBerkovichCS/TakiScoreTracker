@@ -2,10 +2,11 @@ import React from "react";
 
 import * as S from "./style";
 
-const StartGameDialog = ({ isOpen, onStartGame, onEndGame, onClose }) => {
+const StartGameDialog = ({ isOpen, onStartGame, onClose }) => {
   const handleStartGame = (e) => {
     e.preventDefault();
     const playerAmount = e.target.playerAmount.value;
+
     onStartGame(playerAmount);
     onClose();
   };
@@ -15,20 +16,22 @@ const StartGameDialog = ({ isOpen, onStartGame, onEndGame, onClose }) => {
       <S.Title>score board</S.Title>
       <S.Form onSubmit={handleStartGame}>
         <S.Content>
-        <S.Field
-          name="playerAmount"
-          label="Counter"
-          type="number"
-          variant="outlined"
-          margin="normal"
-        />
+          <S.Field
+            name="playerAmount"
+            label="Counter"
+            type="number"
+            variant="outlined"
+            margin="normal"
+          />
         </S.Content>
 
         <S.Footer>
           <S.StartGameButton onClick={onStartGame}>
             Start Game
           </S.StartGameButton>
-          <S.EndGameButton onClick={onEndGame}>End Game</S.EndGameButton>
+          <S.EndGameButton type="button" onClick={onClose}>
+            Cancel
+          </S.EndGameButton>
         </S.Footer>
       </S.Form>
     </S.BaseDialog>

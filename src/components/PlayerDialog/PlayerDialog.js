@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 
 import * as S from "./style";
 
@@ -7,22 +7,28 @@ const PlayerDialog = ({ isOpen, player, onClose, onChange }) => {
     onChange(player.id, { [fieldName]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const gameCounter = e.target.gameCounter.value;
-    const name = e.target.name.value;
-    onChange(player.id, {
-      gameCounter,
-      name,
-    });
-    onClose();
-  };
+  const handleSubmit = useCallback(
+    (e) => {
+      e.preventDefault();
+      console.log("handleSubmit", { e, test: player });
+      const gameCounter = e.target.gameCounter.value;
+      const name = e.target.name.value;
+      console.log({ test: player.id, gameCounter, name });
+      onChange(player.id, {
+        gameCounter,
+        name,
+      });
+      onClose();
+    },
+    [player?.id]
+  );
   return (
     <S.BaseDialog open={isOpen} onClose={onClose}>
       <S.Title>
         <S.CloseButton onClick={onClose}>X</S.CloseButton>
         Player Name:{player?.name} counter:{player?.gameCounter}
       </S.Title>
+      {/* <Form form={''} onSubmit={handleSubmit} /> */}
       <S.Form onSubmit={handleSubmit}>
         <S.Field
           name="name"

@@ -22,29 +22,8 @@ export const TableCircle = styled.div`
   position: relative;
 `;
 
-export const Player = styled.div`
-  height: ${({ playerwidth }) => playerwidth}px;
-  width: ${({ playerwidth }) => playerwidth}px;
-  background-color: ${({ color }) => color};
-  border-radius: 50%;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  font-size: 15px;
-`;
-
-export const ReduceButton = styled.button`
-  border-radius: 50%;
-`;
-
 export const LogoImg = styled.img`
-  width: ${({ issmalllogo }) => (issmalllogo ? 60 : 80)}%;
+  width: ${({ isSmallLogo }) => (isSmallLogo ? 60 : 80)}%;
 `;
 
 export const StartGameButton = styled.button``;
