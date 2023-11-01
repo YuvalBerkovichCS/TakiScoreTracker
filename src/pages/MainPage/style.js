@@ -25,7 +25,7 @@ export const TableCircle = styled.div`
 export const Player = styled.div`
   height: ${({ playerwidth }) => playerwidth}px;
   width: ${({ playerwidth }) => playerwidth}px;
-  background-color: #bbb;
+  background-color: ${({ color }) => color};
   border-radius: 50%;
   position: absolute;
   top: 50%;

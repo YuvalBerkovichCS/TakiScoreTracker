@@ -9,7 +9,7 @@ import WinnersList from "./WinnersList";
 
 const MainPage = () => {
   // Define the number of players
-  const [isGameStarted, setIsGameStarted] = useState(false);
+  const [isStartDialogOpen, setIsStartDialogOpen] = useState(false);
   const [playersList, setPlayersList] = useState([]); // [ { name: 'player 1', top: 0, left: 0 }, ...
   const [winnersIds, setWinnersIds] = useState([]);
   const [selectedPlayerId, setSelectedPlayerId] = useState(null);
@@ -30,7 +30,7 @@ const MainPage = () => {
   // }, []);
 
   const startGame = () => {
-    setIsGameStarted(true);
+    setIsStartDialogOpen(true);
   };
 
   const handlePlayerChange = (playerId, data) => {
@@ -58,8 +58,8 @@ const MainPage = () => {
     }
   };
 
-  const handleStartGame = (players) => {
-    const playersList = createPlayersArray(players, margin).map(
+  const handleStartGame = (playerAmount) => {
+    const playersList = createPlayersArray(playerAmount, margin).map(
       (player, index) => ({
         ...player,
         id: uuidv4(),
@@ -79,8 +79,6 @@ const MainPage = () => {
     });
     console.log({ test: displayWinnersNames() });
   };
-  // ['id','id2']
-  // [{name:'name',id:'id'}]
 
   const handleRestartGame = () => {
     setPlayersList((prev) => {
@@ -103,7 +101,19 @@ const MainPage = () => {
     });
   };
 
-  const handleEndGame = () => {};
+  const handleEndGame = (playerAmount) => {
+    playerAmount.preventDefault();
+    setIsStartDialogOpen(false);
+    setPlayersList([]);
+    setWinnersIds([]);
+  };
+
+  const getPlayerNameById = (playerId) => {
+    const currentPlayerName = playersList.find(
+      ({ id }) => id === playerId
+    )?.name;
+    return currentPlayerName;
+  };
 
   const increasePlayerCounter = (playerId, amount) => {
     const currentPlayerGameCounter = playersList.find(
@@ -123,7 +133,8 @@ const MainPage = () => {
       const angleRadians = (angle * Math.PI) / 180;
       const top = -Math.cos(angleRadians) * margin;
       const left = Math.sin(angleRadians) * margin;
-      players.push({ top, left });
+      const color = COLORS[i];
+      players.push({ top, left, color });
     }
     return players;
   }
@@ -137,31 +148,34 @@ const MainPage = () => {
             Start Game
           </S.StartGameButton>
         )}
-        {playersList.map(({ name, gameCounter, top, left, id }, index) => {
-          const isPlayerFinished = gameCounter === 0;
+        {playersList.map(
+          ({ name, gameCounter, top, left, color, id }, index) => {
+            const isPlayerFinished = gameCounter === 0;
 
-          return (
-            <S.Player
-              playerwidth={PLAYER_WIDTH}
-              style={{ marginTop: top, marginLeft: left }}
-              key={index}
-              onClick={() => setSelectedPlayerId(id)}
-            >
-              <span>{name}</span>
-              <span>{gameCounter}</span>
-              {!isPlayerFinished && (
-                <S.ReduceButton
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    increasePlayerCounter(id, -1);
-                  }}
-                >
-                  -
-                </S.ReduceButton>
-              )}
-            </S.Player>
-          );
-        })}
+            return (
+              <S.Player
+                playerwidth={PLAYER_WIDTH}
+                color={color}
+                style={{ marginTop: top, marginLeft: left }}
+                key={index}
+                onClick={() => setSelectedPlayerId(id)}
+              >
+                <span>{name}</span>
+                <span>{gameCounter}</span>
+                {!isPlayerFinished && (
+                  <S.ReduceButton
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      increasePlayerCounter(id, -1);
+                    }}
+                  >
+                    -
+                  </S.ReduceButton>
+                )}
+              </S.Player>
+            );
+          }
+        )}
         {/* Dialog */}
         {isPlayerDialogOpen && (
           <PlayerDialog
@@ -173,16 +187,17 @@ const MainPage = () => {
         )}
         <WinnersList winnersIds={winnersIds} playersList={playersList} />
         <EndGameDialog
-          isOpen={winnersIds.length === playersAmount - 1}
-          onRestartGame={() => handleRestartGame()}
-          onEndGame={() => handleEndGame()}
+          isOpen={winnersIds.length === playersList.length - 1}
+          onRestartGame={handleRestartGame}
+          onEndGame={handleEndGame}
           winnersIds={winnersIds}
           playersList={playersList}
         />
         <StartGameDialog
-          isOpen={isGameStarted}
-          onStartGame={() => handleStartGame()}
-          onEndGame={() => handleEndGame()}
+          isOpen={isStartDialogOpen}
+          onStartGame={handleStartGame}
+          onEndGame={handleEndGame}
+          onClose={() => setIsStartDialogOpen(false)}
         />
       </S.TableCircle>
     </S.Container>
@@ -199,6 +214,17 @@ const PLAYERS_NAMES = [
   "Pekker",
   "Chen",
   "Daniel",
+];
+
+const COLORS = [
+  "red",
+  "orange",
+  "yellow",
+  "green",
+  "blue",
+  "indigo",
+  "violet",
+  "cyan",
 ];
 
 export default MainPage;
