@@ -36,6 +36,7 @@ const MainPage = () => {
           ({ name, gameCounter, top, left, color, id }, index) => {
             return (
               <Player
+                key={index}
                 onIncreaseCounter={increasePlayerCounter}
                 onClick={setSelectedPlayerId}
                 name={name}

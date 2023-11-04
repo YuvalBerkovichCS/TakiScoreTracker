@@ -49,7 +49,9 @@ const PlayerDialog = ({ isOpen, player, onClose, onChange }) => {
         />
         {/* footer with save and cancel button mui form */}
         <br />
-        <S.CancelButton onClick={onClose}>Cancel</S.CancelButton>
+        <S.CancelButton type="button" onClick={onClose}>
+          Cancel
+        </S.CancelButton>
         <S.SaveButton type="submit">Save</S.SaveButton>
       </S.Form>
     </S.BaseDialog>

@@ -1,6 +1,7 @@
 import DialogTitle from "@mui/material/DialogTitle";
 import Dialog from "@mui/material/Dialog";
 import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
 import styled from "styled-components";
 
 export const BaseDialog = styled(Dialog)`
@@ -22,9 +23,9 @@ export const Title = styled(DialogTitle)`
 export const Form = styled.form``;
 
 export const Content = styled.div`
-  display:flex;
-  align-items:center;
-  justify-content:center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 export const Footer = styled.div`
@@ -34,6 +35,6 @@ export const Footer = styled.div`
 
 export const Field = styled(TextField)``;
 
-export const StartGameButton = styled.button``;
+export const StartGameButton = styled(Button)``;
 
-export const EndGameButton = styled.button``;
+export const EndGameButton = styled(Button)``;

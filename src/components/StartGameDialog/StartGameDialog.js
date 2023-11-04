@@ -1,14 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
 
 import * as S from "./style";
 
 const StartGameDialog = ({ isOpen, onStartGame, onClose }) => {
+  const [isError, setIsError] = useState(false);
   const handleStartGame = (e) => {
     e.preventDefault();
-    const playerAmount = e.target.playerAmount.value;
-
-    onStartGame(playerAmount);
-    onClose();
+    const playerAmount = +e.target.playerAmount.value;
+    if (playerAmount < 2 || playerAmount > 8) {
+      setIsError(true);
+    } else {
+      onStartGame(playerAmount);
+      onClose();
+    }
   };
 
   return (
@@ -17,19 +21,21 @@ const StartGameDialog = ({ isOpen, onStartGame, onClose }) => {
       <S.Form onSubmit={handleStartGame}>
         <S.Content>
           <S.Field
+            error={isError}
             name="playerAmount"
             label="Counter"
             type="number"
             variant="outlined"
             margin="normal"
+            helperText={isError ? "Please enter a number between 2 and 8" : ""}
           />
         </S.Content>
 
         <S.Footer>
-          <S.StartGameButton onClick={onStartGame}>
+          <S.StartGameButton type="submit" onClick={onStartGame}>
             Start Game
           </S.StartGameButton>
-          <S.EndGameButton type="button" onClick={onClose}>
+          <S.EndGameButton type="reset" onClick={onClose}>
             Cancel
           </S.EndGameButton>
         </S.Footer>

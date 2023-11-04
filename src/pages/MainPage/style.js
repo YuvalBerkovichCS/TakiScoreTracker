@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import Button from "@mui/material/Button";
 
 export const Container = styled.div`
   height: 100vh;
@@ -26,4 +27,4 @@ export const LogoImg = styled.img`
   width: ${({ isSmallLogo }) => (isSmallLogo ? 60 : 80)}%;
 `;
 
-export const StartGameButton = styled.button``;
+export const StartGameButton = styled(Button)``;
