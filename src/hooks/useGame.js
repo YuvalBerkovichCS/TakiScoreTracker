@@ -127,15 +127,16 @@ const PLAYERS_NAMES = [
 ];
 
 const COLORS = [
-  "red",
-  "orange",
-  "yellow",
   "green",
-  "blue",
+  "red",
+  "yellow",
+  "cyan",
+  "orange",
   "indigo",
   "violet",
-  "cyan",
+  "blue",
 ];
+
 function createPlayersArray(playerAmount, margin) {
   const players = [];
 

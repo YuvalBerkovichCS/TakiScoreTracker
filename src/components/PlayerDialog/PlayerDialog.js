@@ -11,6 +11,9 @@ const PlayerDialog = ({ isOpen, player, onClose, onChange }) => {
     (e) => {
       e.preventDefault();
       console.log("handleSubmit", { e, test: player });
+      if (e.target.gameCounter.value < 0) {
+        e.target.gameCounter.value = 0;
+      }
       const gameCounter = e.target.gameCounter.value;
       const name = e.target.name.value;
       console.log({ test: player.id, gameCounter, name });
@@ -18,6 +21,7 @@ const PlayerDialog = ({ isOpen, player, onClose, onChange }) => {
         gameCounter,
         name,
       });
+
       onClose();
     },
     [player?.id]

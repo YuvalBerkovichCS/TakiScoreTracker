@@ -10,6 +10,9 @@ const StartGameDialog = ({ isOpen, onStartGame, onClose }) => {
     if (playerAmount < 2 || playerAmount > 8) {
       setIsError(true);
     } else {
+      if(isError===true){
+        setIsError(false);
+      }
       onStartGame(playerAmount);
       onClose();
     }

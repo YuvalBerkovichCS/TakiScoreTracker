@@ -27,4 +27,6 @@ export const LogoImg = styled.img`
   width: ${({ isSmallLogo }) => (isSmallLogo ? 60 : 80)}%;
 `;
 
-export const StartGameButton = styled(Button)``;
+export const StartGameButton = styled(Button)`
+  color:white!important;
+`;
