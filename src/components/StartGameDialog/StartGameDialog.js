@@ -1,48 +1,47 @@
 import React, { useState } from "react";
-
+import Form from "../Form";
 import * as S from "./style";
 
 const StartGameDialog = ({ isOpen, onStartGame, onClose }) => {
-  const [isError, setIsError] = useState(false);
+  const [errors, setErrors] = useState({});
+  const isError = !!errors;
   const handleStartGame = (e) => {
+    console.log({ e });
+    console.log(e.target);
     e.preventDefault();
     const playerAmount = +e.target.playerAmount.value;
     if (playerAmount < 2 || playerAmount > 8) {
-      setIsError(true);
+      setErrors((prev) => ({
+        ...prev,
+        playerAmount: "Please choose a number between 2 and 8",
+      }));
     } else {
-      if(isError===true){
-        setIsError(false);
+      if (errors) {
+        setErrors((prev) => {
+          const copyObject = { ...prev };
+          delete copyObject.playerAmount;
+
+          return copyObject;
+        });
       }
       onStartGame(playerAmount);
       onClose();
     }
   };
-
+  const fields = [
+    { name: "playerAmount", label: "Player Amount", type: "number" },
+    { name: "playerAmount2", label: "Player Amount2", type: "number" },
+  ];
   return (
     <S.BaseDialog open={isOpen}>
       <S.Title>score board</S.Title>
-      <S.Form onSubmit={handleStartGame}>
-        <S.Content>
-          <S.Field
-            error={isError}
-            name="playerAmount"
-            label="Counter"
-            type="number"
-            variant="outlined"
-            margin="normal"
-            helperText={isError ? "Please enter a number between 2 and 8" : ""}
-          />
-        </S.Content>
-
-        <S.Footer>
-          <S.StartGameButton type="submit" onClick={onStartGame}>
-            Start Game
-          </S.StartGameButton>
-          <S.EndGameButton type="reset" onClick={onClose}>
-            Cancel
-          </S.EndGameButton>
-        </S.Footer>
-      </S.Form>
+      <Form
+        fields={fields}
+        errors={errors}
+        onSubmit={handleStartGame}
+        isError={isError}
+        onClose={onClose}
+      />
     </S.BaseDialog>
   );
 };
