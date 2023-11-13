@@ -4,10 +4,8 @@ import * as S from "./style";
 
 const StartGameDialog = ({ isOpen, onStartGame, onClose }) => {
   const [errors, setErrors] = useState({});
-  const isError = !!errors;
+
   const handleStartGame = (e) => {
-    console.log({ e });
-    console.log(e.target);
     e.preventDefault();
     const playerAmount = +e.target.playerAmount.value;
     if (playerAmount < 2 || playerAmount > 8) {
@@ -30,7 +28,6 @@ const StartGameDialog = ({ isOpen, onStartGame, onClose }) => {
   };
   const fields = [
     { name: "playerAmount", label: "Player Amount", type: "number" },
-    { name: "playerAmount2", label: "Player Amount2", type: "number" },
   ];
   return (
     <S.BaseDialog open={isOpen}>
@@ -39,7 +36,6 @@ const StartGameDialog = ({ isOpen, onStartGame, onClose }) => {
         fields={fields}
         errors={errors}
         onSubmit={handleStartGame}
-        isError={isError}
         onClose={onClose}
       />
     </S.BaseDialog>

@@ -2,8 +2,6 @@ import React from "react";
 import * as S from "./style";
 
 const Form = ({ fields, errors, onSubmit, onClose }) => {
-  console.log({ fields });
-  console.log(errors);
   return (
     <S.Form onSubmit={onSubmit}>
       <S.Content>
@@ -18,6 +16,7 @@ const Form = ({ fields, errors, onSubmit, onClose }) => {
               variant="outlined"
               margin="normal"
               helperText={errors[field.name] ?? ""}
+              defaultValue={field.defaultValue ?? ""}
             />
           );
         })}
