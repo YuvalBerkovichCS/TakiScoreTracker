@@ -39,6 +39,14 @@ const StartGameDialog = ({ isOpen, onStartGame, onClose }) => {
         onClose={onClose}
       />
     </S.BaseDialog>
+    // <Dialog title={} >
+    //   <Form
+    //   fields={fields}
+    //   errors={errors}
+    //   onSubmit={handleStartGame}
+    //   onClose={onClose}
+    // />
+    //  // </Dialog>
   );
 };
 

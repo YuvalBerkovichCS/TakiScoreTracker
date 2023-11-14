@@ -57,37 +57,12 @@ const PlayerDialog = ({ isOpen, player, onClose, onChange }) => {
         <S.CloseButton onClick={onClose}>X</S.CloseButton>
         Player Name:{player?.name} counter:{player?.gameCounter}
       </S.Title>
-      {/* <Form form={''} onSubmit={handleSubmit} /> */}
       <Form
         fields={fields}
         errors={errors}
         onSubmit={handleSubmit}
         onClose={onClose}
       />
-      {/* <S.Form onSubmit={handleSubmit}>
-        <S.Field
-          name="name"
-          label="Name"
-          variant="outlined"
-          margin="normal"
-          defaultValue={player?.name}
-          //onChange={(e) => handlePlayerChange(e, "name")}
-        />
-        <S.Field
-          name="gameCounter"
-          label="Counter"
-          type="number"
-          variant="outlined"
-          margin="normal"
-          defaultValue={player?.gameCounter}
-          //onChange={(e) => handlePlayerChange(e, "gameCounter")}
-        />
-         <br />
-        <S.CancelButton type="button" onClick={onClose}>
-          Cancel
-        </S.CancelButton>
-        <S.SaveButton type="submit">Save</S.SaveButton>
-      </S.Form> } */}
     </S.BaseDialog>
   );
 };
