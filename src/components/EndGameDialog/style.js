@@ -20,15 +20,6 @@ export const Content = styled.div`
   justify-content: center;
 `;
 
-export const Title = styled(DialogTitle)`
-  display: flex;
-  justify-content: center;
-`;
-
-export const Form = styled.form``;
-
-export const Field = styled(TextField)``;
-
 export const Footer = styled.div`
   display: flex;
   justify-content: space-between;

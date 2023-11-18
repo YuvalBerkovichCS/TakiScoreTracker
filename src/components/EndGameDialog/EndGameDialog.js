@@ -1,5 +1,6 @@
 import React from "react";
 import WinnersList from "../WinnersList";
+import Dialog from "../Dialog";
 
 import * as S from "./style";
 
@@ -11,8 +12,7 @@ const EndGameDialog = ({
   playersList,
 }) => {
   return (
-    <S.BaseDialog open={isOpen}>
-      <S.Title>score board</S.Title>
+    <Dialog isOpen={isOpen} title={"Score Board"}>
       <S.Content>
         <WinnersList winnersIds={winnersIds} playersList={playersList} />
       </S.Content>
@@ -22,7 +22,7 @@ const EndGameDialog = ({
         </S.RestartGameButton>
         <S.EndGameButton onClick={onEndGame}>End Game</S.EndGameButton>
       </S.Footer>
-    </S.BaseDialog>
+    </Dialog>
   );
 };
 

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
+import Dialog from "../Dialog";
 import Form from "../Form";
-import * as S from "./style";
 
 const StartGameDialog = ({ isOpen, onStartGame, onClose }) => {
   const [errors, setErrors] = useState({});
@@ -30,23 +30,14 @@ const StartGameDialog = ({ isOpen, onStartGame, onClose }) => {
     { name: "playerAmount", label: "Player Amount", type: "number" },
   ];
   return (
-    <S.BaseDialog open={isOpen}>
-      <S.Title>score board</S.Title>
+    <Dialog isOpen={isOpen} onClose={onClose} title={"TAKI"}>
       <Form
         fields={fields}
         errors={errors}
         onSubmit={handleStartGame}
         onClose={onClose}
       />
-    </S.BaseDialog>
-    // <Dialog title={} >
-    //   <Form
-    //   fields={fields}
-    //   errors={errors}
-    //   onSubmit={handleStartGame}
-    //   onClose={onClose}
-    // />
-    //  // </Dialog>
+    </Dialog>
   );
 };
 

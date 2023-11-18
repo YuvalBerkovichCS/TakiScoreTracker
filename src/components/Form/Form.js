@@ -1,7 +1,10 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { useForm } from "../../hooks";
+
 import * as S from "./style";
 
-const Form = ({ fields, errors, onSubmit, onClose }) => {
+const Form = ({ fields = [], errors = {}, onSubmit, onClose }) => {
+  const { form, handleChange } = useForm(fields);
   return (
     <S.Form onSubmit={onSubmit}>
       <S.Content>
@@ -16,14 +19,17 @@ const Form = ({ fields, errors, onSubmit, onClose }) => {
               variant="outlined"
               margin="normal"
               helperText={errors[field.name] ?? ""}
-              defaultValue={field.defaultValue ?? ""}
+              value={form[field.name]}
+              onChange={(e) => {
+                handleChange(field.name, e.target.value);
+              }}
             />
           );
         })}
       </S.Content>
 
       <S.Footer>
-        <S.StartGameButton type="submit">Start Game</S.StartGameButton>
+        <S.StartGameButton type="submit">Submit</S.StartGameButton>
         <S.EndGameButton type="reset" onClick={onClose}>
           Cancel
         </S.EndGameButton>

@@ -1,7 +1,6 @@
 import React, { useCallback, useState } from "react";
+import Dialog from "../Dialog";
 import Form from "../Form";
-
-import * as S from "./style";
 
 const PlayerDialog = ({ isOpen, player, onClose, onChange }) => {
   const [errors, setErrors] = useState({});
@@ -52,18 +51,18 @@ const PlayerDialog = ({ isOpen, player, onClose, onChange }) => {
     },
   ];
   return (
-    <S.BaseDialog open={isOpen} onClose={onClose}>
-      <S.Title>
-        <S.CloseButton onClick={onClose}>X</S.CloseButton>
-        Player Name:{player?.name} counter:{player?.gameCounter}
-      </S.Title>
+    <Dialog
+      isOpen={isOpen}
+      onClose={onClose}
+      title={player.name + "'s settings"}
+    >
       <Form
         fields={fields}
         errors={errors}
         onSubmit={handleSubmit}
         onClose={onClose}
       />
-    </S.BaseDialog>
+    </Dialog>
   );
 };
 

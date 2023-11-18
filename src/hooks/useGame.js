@@ -119,11 +119,11 @@ const PLAYERS_NAMES = [
   "Yuval",
   "Yanko",
   "Pulik",
+  "Ann",
   "Alon",
   "Kobi",
   "Pekker",
   "Chen",
-  "Daniel",
 ];
 
 const COLORS = [
