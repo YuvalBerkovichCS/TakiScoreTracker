@@ -7,7 +7,7 @@ const useForm = (fields = []) => {
     if (fields.length) {
       initForm();
     }
-  }, [fields]);
+  }, []);
 
   console.log(form);
   const handleChange = (fieldName, data) => {

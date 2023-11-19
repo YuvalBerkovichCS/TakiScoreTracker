@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import Dialog from "../Dialog";
 import Form from "../Form";
 
@@ -8,13 +8,12 @@ const PlayerDialog = ({ isOpen, player, onClose, onChange }) => {
   //   onChange(player.id, { [fieldName]: e.target.value });
   // };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = ({ gameCounter, name }) => {
     e.preventDefault();
-    const gameCounter = e.target.gameCounter.value;
-    const name = e.target.name.value;
+
     const newData = {};
     const newErrors = {};
-
+    console.log({ gameCounter, name });
     if (gameCounter < 0) {
       newErrors.gameCounter = "Please enter a natural number";
     } else {
@@ -36,20 +35,24 @@ const PlayerDialog = ({ isOpen, player, onClose, onChange }) => {
     }
   };
 
-  const fields = [
-    {
-      name: "name",
-      label: "Name",
-      type: "text",
-      defaultValue: player.name,
-    },
-    {
-      name: "gameCounter",
-      label: "Counter",
-      type: "number",
-      defaultValue: player.gameCounter,
-    },
-  ];
+  const fields = useMemo(
+    () => [
+      {
+        name: "name",
+        label: "Name",
+        type: "text",
+        defaultValue: player.name,
+      },
+      {
+        name: "gameCounter",
+        label: "Counter",
+        type: "number",
+        defaultValue: player.gameCounter,
+      },
+    ],
+    [player.name, player.gameCounter]
+  );
+
   return (
     <Dialog
       isOpen={isOpen}

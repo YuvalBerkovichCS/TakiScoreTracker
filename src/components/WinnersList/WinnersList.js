@@ -9,6 +9,7 @@ const WinnersList = ({ winnersIds, playersList }) => {
     )?.name;
     return currentPlayerName;
   };
+
   return (
     <S.WinnersList>
       {winnersIds.map((playerId, index) => {
