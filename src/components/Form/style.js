@@ -2,7 +2,7 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import styled from "styled-components";
 
-export const Form = styled.form`
+export const Form = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -25,6 +25,6 @@ export const Field = styled(TextField)`
   width: 100%;
 `;
 
-export const StartGameButton = styled(Button)``;
+export const SubmitButton = styled(Button)``;
 
-export const EndGameButton = styled(Button)``;
+export const CancelButton = styled(Button)``;

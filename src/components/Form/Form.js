@@ -3,10 +3,16 @@ import { useForm } from "../../hooks";
 
 import * as S from "./style";
 
-const Form = ({ fields = [], errors = {}, onSubmit, onClose }) => {
+const Form = ({ fields = [""], errors = {}, onSubmit, onClose }) => {
   const { form, handleChange } = useForm(fields);
+
+  const handleSubmit = () => {
+    console.log("handleSubmit");
+    onSubmit({ ...form });
+  };
+
   return (
-    <S.Form onSubmit={onSubmit}>
+    <S.Form>
       <S.Content>
         {fields.map((field, index) => {
           return (
@@ -22,6 +28,7 @@ const Form = ({ fields = [], errors = {}, onSubmit, onClose }) => {
               value={form[field.name]}
               onChange={(e) => {
                 handleChange(field.name, e.target.value);
+                console.log(form);
               }}
             />
           );
@@ -29,10 +36,16 @@ const Form = ({ fields = [], errors = {}, onSubmit, onClose }) => {
       </S.Content>
 
       <S.Footer>
-        <S.StartGameButton type="submit">Submit</S.StartGameButton>
-        <S.EndGameButton type="reset" onClick={onClose}>
+        <S.SubmitButton
+          onClick={handleSubmit}
+          type="button"
+          className="submitButton"
+        >
+          Submit
+        </S.SubmitButton>
+        <S.CancelButton onClick={onClose} type="reset">
           Cancel
-        </S.EndGameButton>
+        </S.CancelButton>
       </S.Footer>
     </S.Form>
   );

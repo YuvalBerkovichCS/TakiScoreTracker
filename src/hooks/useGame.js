@@ -40,7 +40,7 @@ const useGame = () => {
     }
   };
 
-  const handleStartGame = (playerAmount) => {
+  const handleStartGame = ({ playerAmount }) => {
     const playersList = createPlayersArray(playerAmount, calculatedMargin).map(
       (player, index) => ({
         ...player,

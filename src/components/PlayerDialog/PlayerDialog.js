@@ -9,7 +9,7 @@ const PlayerDialog = ({ isOpen, player, onClose, onChange }) => {
   // };
 
   const handleSubmit = ({ gameCounter, name }) => {
-    e.preventDefault();
+    //e.preventDefault();
 
     const newData = {};
     const newErrors = {};
@@ -26,12 +26,20 @@ const PlayerDialog = ({ isOpen, player, onClose, onChange }) => {
       newErrors.name = "Player name can't be empty";
     }
 
-    console.log({ newData, errors: newErrors });
     setErrors(newErrors);
     if (Object.keys(newErrors).length === 0) {
       onChange(player.id, newData);
 
       onClose();
+    }
+  };
+
+  const handleKeyPress = (e) => {
+    //it triggers by pressing the enter key
+    if (e.keyCode === 13) {
+      e.preventDefault();
+      const submitButton = document.querySelector(".submitButton");
+      submitButton.click();
     }
   };
 
@@ -58,6 +66,7 @@ const PlayerDialog = ({ isOpen, player, onClose, onChange }) => {
       isOpen={isOpen}
       onClose={onClose}
       title={player.name + "'s settings"}
+      onKeyDown={handleKeyPress}
     >
       <Form
         fields={fields}
